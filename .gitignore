@@ -1,0 +1,41 @@
+# ================================
+# Terraform
+# ================================
+
+.terraform/
+*.tfstate
+*.tfstate.*
+terraform.tfvars
+terraform.tfvars.json
+crash.log
+crash.*.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+.terraform.lock.hcl
+
+# ================================
+# macOS
+# ================================
+
+.DS_Store
+
+# ================================
+# VS Code
+# ================================
+
+.vscode/
+
+# ================================
+# Environment Files
+# ================================
+
+.env
+.env.*
+
+# ================================
+# Logs
+# ================================
+
+*.log
