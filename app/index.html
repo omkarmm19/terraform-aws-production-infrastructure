@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Production Infrastructure</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f7fa;
+      color: #1f2937;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 900px;
+      background: white;
+      border-radius: 16px;
+      padding: 48px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: #e8f5e9;
+      color: #2e7d32;
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      font-size: 42px;
+      margin-bottom: 16px;
+    }
+
+    .subtitle {
+      font-size: 18px;
+      color: #6b7280;
+      line-height: 1.6;
+      margin-bottom: 32px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .card {
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 20px;
+    }
+
+    .card h3 {
+      font-size: 16px;
+      margin-bottom: 8px;
+    }
+
+    .card p {
+      color: #6b7280;
+      font-size: 14px;
+    }
+
+    .footer {
+      margin-top: 32px;
+      padding-top: 20px;
+      border-top: 1px solid #e5e7eb;
+      color: #6b7280;
+      font-size: 14px;
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        padding: 28px;
+      }
+
+      h1 {
+        font-size: 32px;
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="container">
+    <span class="badge">● System Operational</span>
+
+    <h1>Production Infrastructure</h1>
+
+    <p class="subtitle">
+      A containerized application deployed on AWS using Terraform,
+      Docker, and automated CI/CD with GitHub Actions.
+    </p>
+
+    <section class="grid">
+      <div class="card">
+        <h3>Infrastructure</h3>
+        <p>AWS VPC, subnets, routing and EC2 provisioned with Terraform.</p>
+      </div>
+
+      <div class="card">
+        <h3>Containerization</h3>
+        <p>Application packaged and deployed using Docker containers.</p>
+      </div>
+
+      <div class="card">
+        <h3>Deployment</h3>
+        <p>Automated deployment pipeline powered by GitHub Actions.</p>
+      </div>
+
+      <div class="card">
+        <h3>Web Server</h3>
+        <p>Nginx serving the application from an AWS EC2 instance.</p>
+      </div>
+    </section>
+
+    <div class="footer">
+      DevOps Infrastructure Project · AWS · Terraform · Docker · GitHub Actions
+    </div>
+  </main>
+</body>
+</html>
