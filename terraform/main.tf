@@ -271,3 +271,91 @@ resource "aws_lb_target_group_attachment" "web_2" {
   target_id        = aws_instance.web_2.id
   port             = 80
 }
+
+resource "aws_launch_template" "web" {
+  name_prefix   = "${var.project_name}-web-"
+  image_id      = data.aws_ami.ubuntu.id
+  instance_type = "t3.micro"
+  key_name      = "devops-key"
+
+  vpc_security_group_ids = [aws_security_group.web.id]
+
+  user_data = base64encode(<<-EOF
+    #!/bin/bash
+
+    apt-get update
+    apt-get install -y docker.io
+
+    systemctl enable --now docker
+
+    usermod -aG docker ubuntu
+
+    mkdir -p /home/ubuntu/app
+
+    cat > /home/ubuntu/app/index.html <<'HTML'
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="UTF-8">
+      <title>Production Infrastructure</title>
+    </head>
+    <body>
+      <h1>Production Infrastructure</h1>
+      <p>Auto Scaling Instance</p>
+    </body>
+    </html>
+    HTML
+
+    cat > /home/ubuntu/app/Dockerfile <<'DOCKERFILE'
+    FROM nginx:alpine
+    COPY index.html /usr/share/nginx/html/index.html
+    EXPOSE 80
+    DOCKERFILE
+
+    docker build -t production-infrastructure:latest /home/ubuntu/app
+    docker run -d -p 80:80 --name production-app production-infrastructure:latest
+  EOF
+  )
+
+  tag_specifications {
+    resource_type = "instance"
+
+    tags = {
+      Name    = "${var.project_name}-asg-instance"
+      Project = var.project_name
+    }
+  }
+}
+
+resource "aws_autoscaling_group" "web" {
+  name              = "${var.project_name}-asg"
+  min_size          = 2
+  desired_capacity  = 2
+  max_size          = 4
+  health_check_type = "ELB"
+  vpc_zone_identifier = [
+    aws_subnet.public.id,
+    aws_subnet.public_b.id
+  ]
+
+  launch_template {
+    id      = aws_launch_template.web.id
+    version = "$Latest"
+  }
+
+  target_group_arns = [
+    aws_lb_target_group.app.arn
+  ]
+
+  tag {
+    key                 = "Name"
+    value               = "${var.project_name}-asg-instance"
+    propagate_at_launch = true
+  }
+
+  tag {
+    key                 = "Project"
+    value               = var.project_name
+    propagate_at_launch = true
+  }
+}
